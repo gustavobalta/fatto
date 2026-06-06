@@ -90,20 +90,40 @@ export default function App() {
   async function saveAll(updatedRows) {
     setSaving(true)
     setError(null)
-    const toUpsert = updatedRows.map((r, i) => rowToDb({ ...r, ordem: i + 1 }))
-    const { data, error } = await supabase
-      .from('produtos')
-      .upsert(toUpsert, { onConflict: 'id' })
-      .select()
-    if (error) {
-      setError('Erro ao salvar.')
-    } else if (data) {
-      // Atualiza ids das linhas novas
-      setRows(prev => prev.map((row, i) => {
-        if (row._isNew && data[i]) return { ...row, id: data[i].id, _isNew: false }
-        return row
-      }))
+
+    const existing = updatedRows.filter(r => !r._isNew)
+    const created = updatedRows.filter(r => r._isNew)
+
+    // Atualiza linhas existentes
+    if (existing.length > 0) {
+      const { error } = await supabase
+        .from('produtos')
+        .upsert(existing.map((r, i) => rowToDb({ ...r, ordem: updatedRows.indexOf(r) + 1 })), { onConflict: 'id' })
+      if (error) { setError('Erro ao salvar.'); setSaving(false); return }
     }
+
+    // Insere linhas novas e pega os ids gerados
+    if (created.length > 0) {
+      const { data, error } = await supabase
+        .from('produtos')
+        .insert(created.map(r => rowToDb({ ...r, ordem: updatedRows.indexOf(r) + 1 })))
+        .select()
+      if (error) { setError('Erro ao salvar.'); setSaving(false); return }
+      if (data) {
+        setRows(prev => {
+          let newIdx = 0
+          return prev.map(row => {
+            if (row._isNew && data[newIdx]) {
+              const updated = { ...row, id: data[newIdx].id, _isNew: false }
+              newIdx++
+              return updated
+            }
+            return row
+          })
+        })
+      }
+    }
+
     setSaving(false)
   }
 

@@ -16,10 +16,28 @@
 .header-title {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .header-sub {
   font-size: 13px;
   color: var(--text-muted);
   font-weight: 400;
+}
+
+.header-status {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-saving {
+  color: var(--text-muted);
+}
+
+.status-ok {
+  color: var(--green);
+}
+
+.status-error {
+  color: var(--red);
 }

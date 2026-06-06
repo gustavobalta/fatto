@@ -1,12 +1,17 @@
 import React from 'react'
 import './Header.css'
 
-export default function Header() {
+export default function Header({ saving, error }) {
   return (
     <header className="header">
       <img src="fattolab-logo.png" alt="FattoLab" className="logo" style={{ background: '#f5f2ee', borderRadius: 8, padding: 4 }} />
       <div className="header-title">
         <span className="header-sub">Calculadora de Custos — Impressão 3D</span>
+      </div>
+      <div className="header-status">
+        {error && <span className="status-error">{error}</span>}
+        {saving && !error && <span className="status-saving">Salvando...</span>}
+        {!saving && !error && <span className="status-ok">Salvo</span>}
       </div>
     </header>
   )

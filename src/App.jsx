@@ -3,6 +3,7 @@ import Header from './components/Header'
 import ProductTable from './components/ProductTable'
 import Summary from './components/Summary'
 import Simulador from './components/Simulador'
+import Login from './components/Login'
 import { supabase } from './lib/supabase'
 import './App.css'
 
@@ -65,6 +66,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [logado, setLogado] = useState(() => sessionStorage.getItem('fl_auth') === '1')
   const [aba, setAba] = useState('produtos')
   const [electricidade, setEletricidade] = useState('0.80')
   const saveTimer = useRef(null)
@@ -164,6 +166,10 @@ export default function App() {
       return next
     })
   }, [updateRows])
+
+  if (!logado) return (
+    <Login onLogin={() => { sessionStorage.setItem('fl_auth', '1'); setLogado(true) }} />
+  )
 
   return (
     <div className="app">

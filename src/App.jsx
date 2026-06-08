@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import Header from './components/Header'
 import ProductTable from './components/ProductTable'
 import Summary from './components/Summary'
+import Simulador from './components/Simulador'
 import { supabase } from './lib/supabase'
 import './App.css'
 
@@ -64,6 +65,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [aba, setAba] = useState('produtos')
   const [electricidade, setEletricidade] = useState('0.80')
   const saveTimer = useRef(null)
 
@@ -165,7 +167,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header saving={saving} error={error} />
+      <Header saving={saving} error={error} aba={aba} onAba={setAba} />
       <main className="main">
         <div className="config-bar">
           <div className="config-group">
@@ -181,7 +183,9 @@ export default function App() {
           </div>
         </div>
 
-        {loading ? (
+        {aba === 'simulador' ? (
+          <Simulador />
+        ) : loading ? (
           <div className="loading">Carregando dados...</div>
         ) : (
           <>

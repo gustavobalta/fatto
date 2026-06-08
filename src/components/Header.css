@@ -13,16 +13,33 @@
   object-fit: contain;
 }
 
-.header-title {
+.header-nav {
   display: flex;
-  flex-direction: column;
+  gap: 4px;
   flex: 1;
 }
 
-.header-sub {
+.nav-btn {
+  background: transparent;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
   font-size: 13px;
+  font-weight: 600;
   color: var(--text-muted);
-  font-weight: 400;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+}
+
+.nav-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.nav-btn-active {
+  background: var(--primary);
+  color: #fff !important;
 }
 
 .header-status {

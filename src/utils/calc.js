@@ -1,9 +1,10 @@
-export function calcRow(row, filamentoCusto, electricidade) {
+export function calcRow(row, electricidade) {
   const g = parseFloat(row.filamento) || 0
   const h = (parseInt(row.tempo_h) || 0) + (parseInt(row.tempo_m) || 0) / 60
   const margem = (parseFloat(row.margem) || 0) / 100
+  const custoPorGrama = parseFloat(row.custo_filamento_g) || 0
 
-  const custo = g * (parseFloat(filamentoCusto) || 0) + h * (parseFloat(electricidade) || 0)
+  const custo = g * custoPorGrama + h * (parseFloat(electricidade) || 0)
   const preco_sugerido = custo * (1 + margem)
   const preco_vendido = parseFloat(row.preco_vendido) || 0
   const lucro = preco_vendido - custo

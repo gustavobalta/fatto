@@ -2,8 +2,8 @@ import React from 'react'
 import { calcRow, fmt } from '../utils/calc'
 import './Summary.css'
 
-export default function Summary({ rows, filamentoCusto, electricidade }) {
-  const calcs = rows.map(r => calcRow(r, filamentoCusto, electricidade))
+export default function Summary({ rows, electricidade }) {
+  const calcs = rows.map(r => calcRow(r, electricidade))
   const filled = rows.filter(r => parseFloat(r.preco_vendido) > 0)
   const filledCalcs = calcs.filter((_, i) => parseFloat(rows[i].preco_vendido) > 0)
 

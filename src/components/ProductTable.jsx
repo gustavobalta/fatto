@@ -42,7 +42,7 @@ function MargemCell({ value, status }) {
   )
 }
 
-export default function ProductTable({ rows, filamentoCusto, electricidade, onUpdate, onRemove, onDuplicate, onAdd }) {
+export default function ProductTable({ rows, electricidade, onUpdate, onRemove, onDuplicate, onAdd }) {
   const update = (id, field) => (val) => onUpdate(id, field, val)
 
   return (
@@ -59,6 +59,7 @@ export default function ProductTable({ rows, filamentoCusto, electricidade, onUp
               <th className="th">Produto</th>
               <th className="th th-sm">SKU</th>
               <th className="th th-num">Filamento (g)</th>
+              <th className="th th-num">R$/g</th>
               <th className="th th-num">Tempo (h:m)</th>
               <th className="th th-num">Custo prod. (R$)</th>
               <th className="th th-num">Margem desejada</th>
@@ -74,7 +75,7 @@ export default function ProductTable({ rows, filamentoCusto, electricidade, onUp
           </thead>
           <tbody>
             {rows.map((row, idx) => {
-              const c = calcRow(row, filamentoCusto, electricidade)
+              const c = calcRow(row, electricidade)
               return (
                 <tr key={row.id} className="tr">
                   <Cell className="td-idx">{idx + 1}</Cell>
@@ -100,6 +101,16 @@ export default function ProductTable({ rows, filamentoCusto, electricidade, onUp
                     min="0"
                     step="0.01"
                     placeholder="0"
+                    className="td-num"
+                  />
+
+                  <EditableCell
+                    value={row.custo_filamento_g}
+                    onChange={update(row.id, 'custo_filamento_g')}
+                    type="number"
+                    min="0"
+                    step="0.001"
+                    placeholder="0.115"
                     className="td-num"
                   />
 

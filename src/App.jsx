@@ -15,6 +15,7 @@ const newRow = (ordem) => ({
   produto: '',
   sku: '',
   filamento: '',
+  custo_filamento_g: '0.115',
   tempo_h: '',
   tempo_m: '',
   margem: '100',
@@ -30,6 +31,7 @@ function rowToDb(row) {
     produto: row.produto || null,
     sku: row.sku || null,
     filamento: parseFloat(row.filamento) || 0,
+    custo_filamento_g: parseFloat(row.custo_filamento_g) || 0.115,
     tempo_h: parseInt(row.tempo_h) || 0,
     tempo_m: parseInt(row.tempo_m) || 0,
     margem: parseFloat(row.margem) || 100,
@@ -47,6 +49,7 @@ function dbToRow(r) {
     produto: r.produto || '',
     sku: r.sku || '',
     filamento: r.filamento?.toString() || '',
+    custo_filamento_g: r.custo_filamento_g?.toString() || '0.115',
     tempo_h: r.tempo_h?.toString() || '',
     tempo_m: r.tempo_m?.toString() || '',
     margem: r.margem?.toString() || '100',
@@ -62,7 +65,6 @@ export default function App() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [electricidade, setEletricidade] = useState('0.80')
-  const [filamentoCusto, setFilamentoCusto] = useState('0.12')
   const saveTimer = useRef(null)
 
   useEffect(() => { load() }, [])
@@ -167,14 +169,6 @@ export default function App() {
       <main className="main">
         <div className="config-bar">
           <div className="config-group">
-            <label>Custo filamento (R$/g)</label>
-            <div className="input-prefix">
-              <span>R$</span>
-              <input type="number" step="0.01" min="0" value={filamentoCusto}
-                onChange={e => setFilamentoCusto(e.target.value)} />
-            </div>
-          </div>
-          <div className="config-group">
             <label>Energia elétrica (R$/h)</label>
             <div className="input-prefix">
               <span>R$</span>
@@ -183,7 +177,7 @@ export default function App() {
             </div>
           </div>
           <div className="config-hint">
-            Custo produção = (filamento × g) + (energia × horas)
+            Custo produção = (R$/g × gramas) + (R$/h × horas) — filamento configurado por produto
           </div>
         </div>
 
@@ -191,10 +185,9 @@ export default function App() {
           <div className="loading">Carregando dados...</div>
         ) : (
           <>
-            <Summary rows={rows} filamentoCusto={filamentoCusto} electricidade={electricidade} />
+            <Summary rows={rows} electricidade={electricidade} />
             <ProductTable
               rows={rows}
-              filamentoCusto={filamentoCusto}
               electricidade={electricidade}
               onUpdate={updateRow}
               onRemove={removeRow}

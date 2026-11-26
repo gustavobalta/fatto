@@ -1,5 +1,5 @@
 import React from 'react'
-import { calcRow, fmt, STATUS_LABELS, STATUS_COLORS } from '../utils/calc'
+import { calcLinha, fmt, STATUS_LABELS, STATUS_COLORS } from '../utils/pricing'
 import './ProductTable.css'
 
 function Cell({ children, className = '' }) {
@@ -37,12 +37,12 @@ function MargemCell({ value, status }) {
   const bg = status ? STATUS_COLORS[status] + '11' : 'transparent'
   return (
     <td className="td" style={{ background: bg }}>
-      <span style={{ color, fontWeight: 600 }}>{value > 0 || value < 0 ? `${fmt(value)}%` : '—'}</span>
+      <span style={{ color, fontWeight: 600 }}>{value === null ? '—' : `${fmt(value)}%`}</span>
     </td>
   )
 }
 
-export default function ProductTable({ rows, electricidade, onUpdate, onRemove, onDuplicate, onAdd }) {
+export default function ProductTable({ rows, cfg, onUpdate, onRemove, onDuplicate, onAdd }) {
   const update = (id, field) => (val) => onUpdate(id, field, val)
 
   return (
@@ -61,10 +61,11 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
               <th className="th th-num">Filamento (g)</th>
               <th className="th th-num">R$/g</th>
               <th className="th th-num">Tempo (h:m)</th>
-              <th className="th th-num">Custo prod. (R$)</th>
-              <th className="th th-num">Margem desejada</th>
+              <th className="th th-num" title="Filamento + impressora, com a perda por falha">Custo prod. (R$)</th>
+              <th className="th th-num" title="Lucro desejado, em % do custo, depois das taxas">Lucro desejado</th>
               <th className="th th-num">Preço sugerido</th>
               <th className="th th-num">Preço vendido</th>
+              <th className="th th-num" title="Comissão, tarifa fixa, embalagem e imposto">Taxas (R$)</th>
               <th className="th th-num">Lucro (R$)</th>
               <th className="th th-num">Margem/custo</th>
               <th className="th th-num">Margem/venda</th>
@@ -75,28 +76,28 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
           </thead>
           <tbody>
             {rows.map((row, idx) => {
-              const c = calcRow(row, electricidade)
+              const c = calcLinha(row, cfg)
               return (
-                <tr key={row.id} className="tr">
+                <tr key={row.key} className="tr">
                   <Cell className="td-idx">{idx + 1}</Cell>
 
                   <EditableCell
                     value={row.produto}
-                    onChange={update(row.id, 'produto')}
+                    onChange={update(row.key, 'produto')}
                     placeholder="Nome do produto"
                     className="td-name"
                   />
 
                   <EditableCell
                     value={row.sku}
-                    onChange={update(row.id, 'sku')}
+                    onChange={update(row.key, 'sku')}
                     placeholder="FL01"
                     className="td-sku"
                   />
 
                   <EditableCell
                     value={row.filamento}
-                    onChange={update(row.id, 'filamento')}
+                    onChange={update(row.key, 'filamento')}
                     type="number"
                     min="0"
                     step="0.01"
@@ -106,7 +107,7 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
 
                   <EditableCell
                     value={row.custo_filamento_g}
-                    onChange={update(row.id, 'custo_filamento_g')}
+                    onChange={update(row.key, 'custo_filamento_g')}
                     type="number"
                     min="0"
                     step="0.001"
@@ -123,7 +124,7 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                         min="0"
                         placeholder="0h"
                         value={row.tempo_h}
-                        onChange={e => update(row.id, 'tempo_h')(e.target.value)}
+                        onChange={e => update(row.key, 'tempo_h')(e.target.value)}
                       />
                       <span className="tempo-sep">:</span>
                       <input
@@ -133,7 +134,7 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                         max="59"
                         placeholder="00m"
                         value={row.tempo_m}
-                        onChange={e => update(row.id, 'tempo_m')(e.target.value)}
+                        onChange={e => update(row.key, 'tempo_m')(e.target.value)}
                       />
                     </div>
                   </td>
@@ -150,13 +151,23 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                         step="1"
                         placeholder="100"
                         value={row.margem}
-                        onChange={e => update(row.id, 'margem')(e.target.value)}
+                        onChange={e => update(row.key, 'margem')(e.target.value)}
                       />
                       <span className="pct-sym">%</span>
                     </div>
                   </td>
 
-                  <Cell className="td-num td-calc td-suggested">R$ {fmt(c.preco_sugerido)}</Cell>
+                  <td className="td td-num td-calc td-suggested">
+                    {c.preco_sugerido === null ? '—' : (
+                      <button
+                        className="btn-usar"
+                        title="Usar como preço vendido"
+                        onClick={() => update(row.key, 'preco_vendido')(c.preco_sugerido.toFixed(2))}
+                      >
+                        R$ {fmt(c.preco_sugerido)}
+                      </button>
+                    )}
+                  </td>
 
                   {/* Preço vendido */}
                   <td className="td td-edit td-num">
@@ -169,17 +180,21 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                         step="0.01"
                         placeholder="0,00"
                         value={row.preco_vendido}
-                        onChange={e => update(row.id, 'preco_vendido')(e.target.value)}
+                        onChange={e => update(row.key, 'preco_vendido')(e.target.value)}
                       />
                     </div>
                   </td>
 
+                  <Cell className="td-num td-calc">
+                    {c.taxas === null ? '—' : `R$ ${fmt(c.taxas)}`}
+                  </Cell>
+
                   <Cell className={`td-num td-calc ${c.lucro < 0 ? 'td-neg' : 'td-pos'}`}>
-                    R$ {fmt(c.lucro)}
+                    {c.lucro === null ? '—' : `R$ ${fmt(c.lucro)}`}
                   </Cell>
 
                   <Cell className="td-num td-calc">
-                    {c.custo > 0 ? `${fmt(c.margem_custo_final)}%` : '—'}
+                    {c.margem_custo_final === null || c.custo <= 0 ? '—' : `${fmt(c.margem_custo_final)}%`}
                   </Cell>
 
                   <MargemCell value={c.margem_venda_final} status={c.status} />
@@ -196,14 +211,14 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                         type="url"
                         placeholder="Shopee"
                         value={row.link_shopee}
-                        onChange={e => update(row.id, 'link_shopee')(e.target.value)}
+                        onChange={e => update(row.key, 'link_shopee')(e.target.value)}
                       />
                       <input
                         className="cell-input link-input"
                         type="url"
                         placeholder="MakerWorld"
                         value={row.link_projeto}
-                        onChange={e => update(row.id, 'link_projeto')(e.target.value)}
+                        onChange={e => update(row.key, 'link_projeto')(e.target.value)}
                       />
                       <div className="link-icons">
                         {row.link_shopee && <a href={row.link_shopee} target="_blank" rel="noreferrer" className="link-btn">🛒</a>}
@@ -213,8 +228,8 @@ export default function ProductTable({ rows, electricidade, onUpdate, onRemove, 
                   </td>
 
                   <Cell className="td-actions">
-                    <button className="btn-icon btn-dup" title="Duplicar" onClick={() => onDuplicate(row.id)}>⧉</button>
-                    <button className="btn-icon btn-del" title="Remover" onClick={() => onRemove(row.id)}>×</button>
+                    <button className="btn-icon btn-dup" title="Duplicar" onClick={() => onDuplicate(row.key)}>⧉</button>
+                    <button className="btn-icon btn-del" title="Remover" onClick={() => onRemove(row.key)}>×</button>
                   </Cell>
                 </tr>
               )

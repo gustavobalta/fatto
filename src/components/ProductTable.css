@@ -258,3 +258,18 @@
   background: var(--primary);
   color: #fff;
 }
+
+.btn-usar {
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border: 1px dashed transparent;
+}
+
+.btn-usar:hover {
+  border-color: var(--primary);
+  background: var(--bg);
+}

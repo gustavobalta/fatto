@@ -66,7 +66,7 @@ function dbToRow(r) {
 
 function carregarConfig() {
   try {
-    return { ...CONFIG_PADRAO, ...JSON.parse(localStorage.getItem('fl_config') || '{}') }
+    return { ...CONFIG_PADRAO, ...JSON.parse(localStorage.getItem('fl_config_v2') || '{}') }
   } catch {
     return { ...CONFIG_PADRAO }
   }
@@ -89,7 +89,7 @@ export default function App() {
   const rodando = useRef(false)
   const deNovo = useRef(false)
 
-  useEffect(() => { localStorage.setItem('fl_config', JSON.stringify(cfg)) }, [cfg])
+  useEffect(() => { localStorage.setItem('fl_config_v2', JSON.stringify(cfg)) }, [cfg])
 
   useEffect(() => {
     sessionStorage.removeItem('fl_auth') // resto do login antigo

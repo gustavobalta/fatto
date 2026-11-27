@@ -27,11 +27,11 @@ for (const p of m.perfis) {
 
 const custo = custoProducao({ gramas: perfil.gramas, custoG, horas: perfil.horas })
 console.log(`\nPerfil usado: ${perfil.id}  ${perfil.gramas} g, ${fmtHoras(perfil.horas)}${perfil.precisaAms ? ', precisa de AMS' : ''}`)
-console.log(`Custo por peça: ${R(custo)}  (filamento R$ ${fmt(custoG * 1000)}/kg, máquina R$ ${fmt(CONFIG_PADRAO.maquinaHora)}/h, ${CONFIG_PADRAO.falhaPct}% de perda)`)
-console.log(`\nCanal            Mínimo (lucro 0)   Sugerido (lucro ${margem}% do custo)   Lucro no sugerido`)
+console.log(`Custo por peça: ${R(custo)}  (filamento R$ ${fmt(custoG * 1000)}/kg, energia ${CONFIG_PADRAO.potenciaW} W × R$ ${fmt(CONFIG_PADRAO.kwh)}/kWh)`)
+console.log(`\nCanal            Mínimo (lucro 0)   Sugerido (custo + ${margem}%)         Lucro no sugerido`)
 for (const canal of Object.keys(CANAIS)) {
   const min = precoParaLucro(0, custo, canal)
-  const sug = precoSugerido(custo, margem, canal)
+  const sug = precoSugerido(custo, margem)
   const v = sug != null ? venda(sug, custo, canal) : null
   console.log(`${CANAIS[canal].label.padEnd(16)} ${R(min).padEnd(18)} ${R(sug).padEnd(37)} ${v ? R(v.lucro) + ` (${fmt(v.margemVenda, 0)}% da venda)` : '—'}`)
 }

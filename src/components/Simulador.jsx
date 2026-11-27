@@ -105,10 +105,11 @@ export default function Simulador({ cfg, onAdicionar }) {
     k,
     label: CANAIS[k].label,
     minimo: precoParaLucro(0, custo, k, cfg),
-    sugerido: precoSugerido(custo, margem, k, cfg),
   }))
+  const sugerido = precoSugerido(custo, margem)
+  for (const c of canais) c.vSug = venda(sugerido, custo, c.k, cfg)
   const sug = canais.find((c) => c.k === cfg.canal)
-  const vSug = sug?.sugerido ? venda(sug.sugerido, custo, cfg.canal, cfg) : null
+  const vSug = sugerido > 0 ? sug.vSug : null
   const vReal = precoVendido > 0 ? venda(precoVendido, custo, cfg.canal, cfg) : null
   const status = vReal ? statusMargem(vReal.margemVenda, true) : null
 
@@ -259,7 +260,7 @@ export default function Simulador({ cfg, onAdicionar }) {
                   onClick={() => onAdicionar({
                     produto: s.produto, filamento: s.filamento, custo_filamento_g: s.custo_filamento_g,
                     tempo_h: s.tempo_h, tempo_m: s.tempo_m, margem: s.margem,
-                    preco_vendido: s.preco_vendido || (sug?.sugerido ? sug.sugerido.toFixed(2) : ''),
+                    preco_vendido: s.preco_vendido || (sugerido > 0 ? sugerido.toFixed(2) : ''),
                     link_projeto: s.link_projeto,
                   })}
                 >
@@ -282,24 +283,24 @@ export default function Simulador({ cfg, onAdicionar }) {
                 <strong>R$ {fmt(sug?.minimo ?? NaN)}</strong>
               </div>
               <div className="sim-result-row sim-result-highlight">
-                <span>Preço sugerido ({fmt(margem, 0)}% de lucro sobre o custo)</span>
-                <strong className="sim-suggested">R$ {fmt(sug?.sugerido ?? NaN)}</strong>
+                <span>Preço sugerido (custo + {fmt(margem, 0)}%)</span>
+                <strong className="sim-suggested">R$ {fmt(sugerido)}</strong>
               </div>
               {vSug && (
                 <div className="sim-hint">
-                  Nesse preço: taxas R$ {fmt(vSug.taxas)} ({vSug.faixa}), lucro R$ {fmt(vSug.lucro)}, {fmt(vSug.margemVenda)}% da venda.
+                  Vendendo por esse preço na {CANAIS[cfg.canal].label}: taxas R$ {fmt(vSug.taxas)} ({vSug.faixa}), sobra de lucro R$ {fmt(vSug.lucro)} ({fmt(vSug.margemVenda)}% da venda).
                 </div>
               )}
 
               <div className="sim-divider" />
               <table className="mw-canais">
-                <thead><tr><th>Canal</th><th>Mínimo</th><th>Sugerido</th></tr></thead>
+                <thead><tr><th>Canal</th><th>Mínimo</th><th>Lucro no sugerido</th></tr></thead>
                 <tbody>
                   {canais.map((c) => (
                     <tr key={c.k} className={c.k === cfg.canal ? 'mw-canal-ativo' : ''}>
                       <td>{c.label}</td>
                       <td>R$ {fmt(c.minimo ?? NaN)}</td>
-                      <td>R$ {fmt(c.sugerido ?? NaN)}</td>
+                      <td style={{ color: c.vSug.lucro >= 0 ? undefined : '#c0392b' }}>R$ {fmt(c.vSug.lucro)}</td>
                     </tr>
                   ))}
                 </tbody>

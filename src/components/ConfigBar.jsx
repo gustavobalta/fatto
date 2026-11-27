@@ -1,5 +1,5 @@
 import React from 'react'
-import { CANAIS } from '../utils/pricing'
+import { CANAIS, num } from '../utils/pricing'
 
 function Campo({ label, prefixo, sufixo, valor, onChange, step = '0.01', title }) {
   return (
@@ -25,7 +25,8 @@ export default function ConfigBar({ cfg, onChange }) {
           {Object.entries(CANAIS).map(([k, c]) => <option key={k} value={k}>{c.label}</option>)}
         </select>
       </div>
-      <Campo label="Impressora (R$/h)" prefixo="R$" valor={cfg.maquinaHora} onChange={set('maquinaHora')} title="Energia + desgaste por hora de impressão" />
+      <Campo label="Potência da impressora" sufixo="W" step="1" valor={cfg.potenciaW} onChange={set('potenciaW')} title="A1 Mini imprimindo: ~80 W" />
+      <Campo label="Energia (R$/kWh)" prefixo="R$" valor={cfg.kwh} onChange={set('kwh')} title="Valor do kWh na sua conta de luz" />
       <Campo label="Perda por falha" sufixo="%" step="1" valor={cfg.falhaPct} onChange={set('falhaPct')} title="Parte das impressões que dá errado e é refeita" />
       <Campo label="Embalagem por pedido" prefixo="R$" valor={cfg.embalagem} onChange={set('embalagem')} />
       <Campo label="Imposto sobre venda" sufixo="%" step="0.1" valor={cfg.impostoPct} onChange={set('impostoPct')} title="MEI paga DAS fixo: deixe 0" />
@@ -36,7 +37,7 @@ export default function ConfigBar({ cfg, onChange }) {
         </>
       )}
       <div className="config-hint">
-        Custo = (g × R$/g + horas × R$/h) × (1 + perda). Preço sugerido já cobre {CANAIS[cfg.canal]?.fonte}, embalagem e imposto.
+        Como na Acelera3D: custo = g × R$/g + horas × R$/kWh × W ÷ 1000{num(cfg.falhaPct) > 0 ? ' (+ perda)' : ''}; preço sugerido = custo × (1 + margem). Taxas de {CANAIS[cfg.canal]?.label}, embalagem e imposto aparecem no lucro, não no sugerido.
       </div>
     </div>
   )

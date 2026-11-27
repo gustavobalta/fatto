@@ -17,10 +17,14 @@ export const CANAIS = {
   direto: { label: 'Venda direta', fonte: 'sem tarifa de plataforma', faixas: [{ ate: null, taxa: 0, fixo: 0 }] },
 }
 
+// Custo e preço seguem a calculadora da Acelera3D (acelera3d.com/calculadora-de-custos-de-impressao-3d):
+//   filamento = g × R$/g;  energia = horas × R$/kWh × W / 1000;  preço = custo × (1 + margem%).
+// Perda por falha, embalagem e imposto são extras opcionais (padrão 0, como lá).
 export const CONFIG_PADRAO = {
-  maquinaHora: 0.8,      // R$/h de impressora (energia + desgaste)
-  falhaPct: 5,           // % de impressões perdidas (refeitas)
-  embalagem: 1.5,        // R$ por pedido
+  potenciaW: 80,         // W da impressora (A1 Mini imprimindo ~80 W)
+  kwh: 0.85,             // R$ por kWh da conta de luz
+  falhaPct: 0,           // % de impressões perdidas (refeitas)
+  embalagem: 0,          // R$ por pedido
   impostoPct: 0,         // % sobre a venda (MEI paga DAS fixo: 0)
   canal: 'shopee',
   mlTaxa: 12,            // % (Clássico ~12, Premium ~17; varia por categoria)
@@ -42,9 +46,14 @@ export function horas(h, m) {
   return pos(num(h)) + pos(num(m)) / 60
 }
 
-// Custo de produzir uma unidade (filamento + máquina), já com a perda por falha.
+// R$ de energia por hora de impressão.
+export function energiaHora(cfg = CONFIG_PADRAO) {
+  return (pos(num(cfg.potenciaW)) * pos(num(cfg.kwh))) / 1000
+}
+
+// Custo de produzir uma unidade (filamento + energia), com a perda por falha se configurada.
 export function custoProducao({ gramas, custoG, horas: hs }, cfg = CONFIG_PADRAO) {
-  const base = pos(gramas) * pos(custoG) + pos(hs) * pos(cfg.maquinaHora)
+  const base = pos(gramas) * pos(custoG) + pos(hs) * energiaHora(cfg)
   return base * (1 + pos(cfg.falhaPct) / 100)
 }
 
@@ -121,9 +130,10 @@ function intervalos(canal, cfg) {
   return out
 }
 
-// Margem desejada = lucro como % do custo (mesmo significado que o app já usava).
-export function precoSugerido(custo, margemPct, canal, cfg = CONFIG_PADRAO) {
-  return precoParaLucro((custo * pos(margemPct)) / 100, custo, canal, cfg)
+// Preço sugerido como na Acelera3D: custo × (1 + margem%). Não embute taxa de canal;
+// quanto sobra depois das taxas é mostrado à parte com `venda()`.
+export function precoSugerido(custo, margemPct) {
+  return Math.round(pos(custo) * (1 + pos(margemPct) / 100) * 100) / 100
 }
 
 export function statusMargem(margemVenda, temPreco) {

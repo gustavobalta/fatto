@@ -61,9 +61,9 @@ export default function ProductTable({ rows, cfg, onUpdate, onRemove, onDuplicat
               <th className="th th-num">Filamento (g)</th>
               <th className="th th-num">R$/g</th>
               <th className="th th-num">Tempo (h:m)</th>
-              <th className="th th-num" title="Filamento + impressora, com a perda por falha">Custo prod. (R$)</th>
-              <th className="th th-num" title="Lucro desejado, em % do custo, depois das taxas">Lucro desejado</th>
-              <th className="th th-num">Preço sugerido</th>
+              <th className="th th-num" title="Filamento + energia da impressora (e perda por falha, se configurada)">Custo prod. (R$)</th>
+              <th className="th th-num" title="Margem sobre o custo, como na Acelera3D: preço = custo × (1 + margem)">Lucro desejado</th>
+              <th className="th th-num" title="Custo × (1 + margem). Não inclui taxa do canal: veja o lucro depois das taxas">Preço sugerido</th>
               <th className="th th-num">Preço vendido</th>
               <th className="th th-num" title="Comissão, tarifa fixa, embalagem e imposto">Taxas (R$)</th>
               <th className="th th-num">Lucro (R$)</th>

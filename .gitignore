@@ -4,3 +4,6 @@ dist/
 *.local
 ._*
 .claude/
+.firebase/
+backup/
+supabase/.temp/

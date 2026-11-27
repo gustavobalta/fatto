@@ -4,7 +4,7 @@
 //
 // Deploy:  npx supabase functions deploy makerworld --project-ref tlvunnzgrawkolgrgucd
 
-const ORIGENS = ['https://gustavobalta.github.io', 'http://localhost:5173', 'http://localhost:4173']
+const ORIGENS = ['https://fattolab3d.web.app', 'https://fattolab3d.firebaseapp.com', 'https://gustavobalta.github.io','http://localhost:5173', 'http://localhost:4173']
 
 function cors(origin: string | null) {
   return {

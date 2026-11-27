@@ -4,6 +4,21 @@ O login agora é por e-mail e senha do Supabase Auth. A senha fixa no código fo
 e os dados só carregam depois do login. Quem protege os dados de verdade é o RLS do banco:
 sem ele, qualquer um com a chave publicável (que vai no site) lê e altera a tabela.
 
+## Como está hoje (2026-11-27): só senha, usuário único
+
+- A tela pede **só a senha**. O site entra com o usuário fixo `equipe@fattolab3d.web.app`
+  (`LOGIN_EMAIL` em `src/components/Login.jsx`).
+- O Supabase exige no mínimo 6 caracteres, então o site manda `fattolab-` + a senha digitada.
+  No painel, a senha do usuário é `fattolab-<senha>`.
+- `001_acesso_produtos.sql` e `002_membro_equipe.sql` já foram rodados. O `002` põe o usuário
+  `equipe` em `membros` sozinho quando ele é criado. Cadastro público desligado.
+- Conta do Supabase: gustavo.oliveira.baltazar. Usuários:
+  https://supabase.com/dashboard/project/tlvunnzgrawkolgrgucd/auth/users
+- O painel não troca a senha direto (só manda e-mail, e `equipe@` não recebe). Para trocar:
+  apagar o usuário e criar de novo com a senha nova, marcando Auto Confirm User.
+
+O passo a passo abaixo é o original, para um usuário por e-mail.
+
 ## Ordem (para ninguém ficar trancado para fora)
 
 1. **Backup.** Table Editor > `produtos` > Export to CSV.

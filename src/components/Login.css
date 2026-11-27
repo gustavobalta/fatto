@@ -51,7 +51,6 @@
   color: var(--text);
   font-family: inherit;
   text-align: center;
-  letter-spacing: 4px;
   transition: border-color .15s;
 }
 
@@ -88,4 +87,9 @@
 
 .login-btn:hover {
   background: var(--primary-dark);
+}
+
+.login-btn:disabled {
+  opacity: .6;
+  cursor: wait;
 }

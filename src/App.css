@@ -80,3 +80,22 @@
   border-left: 2px solid var(--border);
   margin-left: 4px;
 }
+
+.config-select {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.btn-retry {
+  margin-left: 8px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}

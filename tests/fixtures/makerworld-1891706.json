@@ -1,0 +1,329 @@
+{
+ "id": 1891706,
+ "title": "The Grinch - Wall Mount",
+ "coverUrl": "https://makerworld.bblmw.com/makerworld/model/USa2b87c0cd202c3/design/2025-10-15_ea3ece3855062.png",
+ "summary": "<p>Grinch hand</p>",
+ "license": "Standard Digital File License",
+ "licenseDescriptionInfo": {
+  "content": "You shall not share, sub-license, sell, rent, host, transfer"
+ },
+ "designCreator": {
+  "name": "Stag 3D"
+ },
+ "tags": [
+  "the grinch",
+  "christmas",
+  "christmas decor"
+ ],
+ "downloadCount": 45846,
+ "printCount": 26782,
+ "likeCount": 17408,
+ "defaultInstanceId": 2026468,
+ "instances": [
+  {
+   "id": 2026468,
+   "title": "0.2mm layer, 2 walls, 15% infill",
+   "weight": 310,
+   "prediction": 39269,
+   "needAms": true,
+   "materialColorCnt": 3,
+   "instanceFilaments": [
+    {
+     "type": "PLA",
+     "color": "#DE4343",
+     "usedM": "35.76",
+     "usedG": "114"
+    },
+    {
+     "type": "PLA",
+     "color": "#FFFFFF",
+     "usedM": "29.59",
+     "usedG": "94"
+    },
+    {
+     "type": "PLA",
+     "color": "#61C680",
+     "usedM": "31.84",
+     "usedG": "102"
+    }
+   ],
+   "printCount": 14471,
+   "extention": {
+    "modelInfo": {
+     "compatibility": {
+      "devProductName": "H2D"
+     },
+     "otherCompatibility": [
+      {
+       "devProductName": "X1E"
+      },
+      {
+       "devProductName": "X1 Carbon"
+      },
+      {
+       "devProductName": "X1"
+      },
+      {
+       "devProductName": "P2S"
+      },
+      {
+       "devProductName": "P1S"
+      },
+      {
+       "devProductName": "A1"
+      },
+      {
+       "devProductName": "P1P"
+      },
+      {
+       "devProductName": "H2D Pro"
+      },
+      {
+       "devProductName": "H2S"
+      }
+     ],
+     "plates": [
+      {
+       "index": 1,
+       "name": "Arm",
+       "weight": 208,
+       "prediction": 23408,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#DE4343",
+         "usedG": "114"
+        },
+        {
+         "type": "PLA",
+         "color": "#FFFFFF",
+         "usedG": "94"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "name": "Hand",
+       "weight": 102,
+       "prediction": 15861,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#61C680",
+         "usedG": "102"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": 2093083,
+   "title": "Hole in the wall, 0.28mm layer, 2 walls, 15% infill",
+   "weight": 26,
+   "prediction": 3458,
+   "needAms": false,
+   "materialColorCnt": 1,
+   "instanceFilaments": [
+    {
+     "type": "PLA",
+     "color": "#161616",
+     "usedM": "8.71",
+     "usedG": "26"
+    }
+   ],
+   "printCount": 2008,
+   "extention": {
+    "modelInfo": {
+     "compatibility": {
+      "devProductName": "X1 Carbon"
+     },
+     "otherCompatibility": [
+      {
+       "devProductName": "P1S"
+      },
+      {
+       "devProductName": "X1"
+      },
+      {
+       "devProductName": "H2D Pro"
+      },
+      {
+       "devProductName": "P1P"
+      },
+      {
+       "devProductName": "H2S"
+      },
+      {
+       "devProductName": "H2D"
+      },
+      {
+       "devProductName": "X1E"
+      },
+      {
+       "devProductName": "A1"
+      },
+      {
+       "devProductName": "P2S"
+      },
+      {
+       "devProductName": "H2C"
+      },
+      {
+       "devProductName": "X2D"
+      },
+      {
+       "devProductName": "A2L"
+      },
+      {
+       "devProductName": "H3C"
+      },
+      {
+       "devProductName": "P3C"
+      }
+     ],
+     "plates": [
+      {
+       "index": 1,
+       "name": "",
+       "weight": 26,
+       "prediction": 3458,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#161616",
+         "usedG": "26"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": 2179764,
+   "title": "A1 Mini KEIN AMS - 0.2mm Schicht, 2 Wände, 15% Füllung",
+   "weight": 311,
+   "prediction": 33144,
+   "needAms": false,
+   "materialColorCnt": 3,
+   "instanceFilaments": [
+    {
+     "type": "PLA",
+     "color": "#DE4343",
+     "usedM": "34.31",
+     "usedG": "109"
+    },
+    {
+     "type": "PLA",
+     "color": "#61C680",
+     "usedM": "31.38",
+     "usedG": "100"
+    },
+    {
+     "type": "PLA",
+     "color": "#FFFFFF",
+     "usedM": "31.93",
+     "usedG": "102"
+    }
+   ],
+   "printCount": 1730,
+   "extention": {
+    "modelInfo": {
+     "compatibility": {
+      "devProductName": "A1 mini"
+     },
+     "otherCompatibility": [
+      {
+       "devProductName": "H2D"
+      },
+      {
+       "devProductName": "A1"
+      },
+      {
+       "devProductName": "P2S"
+      },
+      {
+       "devProductName": "H2S"
+      },
+      {
+       "devProductName": "X1"
+      },
+      {
+       "devProductName": "H2D Pro"
+      },
+      {
+       "devProductName": "X1E"
+      },
+      {
+       "devProductName": "P1S"
+      },
+      {
+       "devProductName": "X1 Carbon"
+      },
+      {
+       "devProductName": "H2C"
+      },
+      {
+       "devProductName": "P1P"
+      },
+      {
+       "devProductName": "X2D"
+      },
+      {
+       "devProductName": "A2L"
+      },
+      {
+       "devProductName": "H3C"
+      },
+      {
+       "devProductName": "P3C"
+      }
+     ],
+     "plates": [
+      {
+       "index": 1,
+       "name": "Arm",
+       "weight": 109,
+       "prediction": 7473,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#DE4343",
+         "usedG": "109"
+        }
+       ]
+      },
+      {
+       "index": 2,
+       "name": "Hand",
+       "weight": 100,
+       "prediction": 15620,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#61C680",
+         "usedG": "100"
+        }
+       ]
+      },
+      {
+       "index": 3,
+       "name": "Cuff",
+       "weight": 102,
+       "prediction": 10051,
+       "filaments": [
+        {
+         "type": "PLA",
+         "color": "#FFFFFF",
+         "usedG": "102"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ]
+}
